@@ -1,6 +1,6 @@
 {
-  "name": "konva",
-  "version": "9.3.6",
+  "name": "km-konva",
+  "version": "0.0.2",
   "author": "Anton Lavrenov",
   "files": [
     "README.md",
