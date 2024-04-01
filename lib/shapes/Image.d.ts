@@ -1,6 +1,6 @@
-import { Shape, ShapeConfig } from '../Shape';
-import { GetSet, IRect } from '../types';
-import { Context } from '../Context';
+import { Shape, ShapeConfig } from '../Shape.js';
+import { GetSet, IRect } from '../types.js';
+import { Context } from '../Context.js';
 export interface ImageConfig extends ShapeConfig {
     image: CanvasImageSource | undefined;
     crop?: IRect;

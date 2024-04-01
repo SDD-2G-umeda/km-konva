@@ -1,6 +1,6 @@
-import { Shape, ShapeConfig } from '../Shape';
-import { Context } from '../Context';
-import { GetSet, Vector2d } from '../types';
+import { Shape, ShapeConfig } from '../Shape.js';
+import { Context } from '../Context.js';
+import { GetSet, Vector2d } from '../types.js';
 export interface EllipseConfig extends ShapeConfig {
     radiusX: number;
     radiusY: number;

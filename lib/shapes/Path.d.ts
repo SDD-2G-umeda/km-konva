@@ -1,5 +1,5 @@
-import { Shape, ShapeConfig } from '../Shape';
-import { GetSet, PathSegment } from '../types';
+import { Shape, ShapeConfig } from '../Shape.js';
+import { GetSet, PathSegment } from '../types.js';
 export interface PathConfig extends ShapeConfig {
     data?: string;
 }

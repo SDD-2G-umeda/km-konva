@@ -1,7 +1,7 @@
-import { Node, NodeConfig } from './Node';
-import { Context } from './Context';
-import { GetSet, Vector2d } from './types';
-import { HitCanvas, SceneCanvas } from './Canvas';
+import { Node, NodeConfig } from './Node.js';
+import { Context } from './Context.js';
+import { GetSet, Vector2d } from './types.js';
+import { HitCanvas, SceneCanvas } from './Canvas.js';
 export type ShapeConfigHandler<TTarget> = {
     bivarianceHack(ctx: Context, shape: TTarget): void;
 }['bivarianceHack'];

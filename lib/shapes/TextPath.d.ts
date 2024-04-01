@@ -1,7 +1,7 @@
-import { Context } from '../Context';
-import { Shape, ShapeConfig } from '../Shape';
-import { Text } from './Text';
-import { GetSet, PathSegment, Vector2d } from '../types';
+import { Context } from '../Context.js';
+import { Shape, ShapeConfig } from '../Shape.js';
+import { Text } from './Text.js';
+import { GetSet, PathSegment, Vector2d } from '../types.js';
 export interface TextPathConfig extends ShapeConfig {
     text?: string;
     data?: string;

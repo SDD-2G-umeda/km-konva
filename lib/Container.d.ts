@@ -1,8 +1,8 @@
-import { Node, NodeConfig } from './Node';
-import { GetSet, IRect } from './types';
-import { Shape } from './Shape';
-import { HitCanvas, SceneCanvas } from './Canvas';
-import { SceneContext } from './Context';
+import { Node, NodeConfig } from './Node.js';
+import { GetSet, IRect } from './types.js';
+import { Shape } from './Shape.js';
+import { HitCanvas, SceneCanvas } from './Canvas.js';
+import { SceneContext } from './Context.js';
 export type ClipFuncOutput = void | [Path2D | CanvasFillRule] | [Path2D, CanvasFillRule];
 export interface ContainerConfig extends NodeConfig {
     clearBeforeDraw?: boolean;
@@ -32,7 +32,7 @@ export declare abstract class Container<ChildType extends Node = Node> extends N
     };
     isAncestorOf(node: Node): boolean;
     clone(obj?: any): this;
-    getAllIntersections(pos: any): Shape<import("./Shape").ShapeConfig>[];
+    getAllIntersections(pos: any): Shape<import("./Shape.js").ShapeConfig>[];
     _clearSelfAndDescendantCache(attr?: string): void;
     _setChildrenIndices(): void;
     drawScene(can?: SceneCanvas, top?: Node, bufferCanvas?: SceneCanvas): this;

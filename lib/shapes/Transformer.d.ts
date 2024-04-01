@@ -1,10 +1,10 @@
-import { Transform } from '../Util';
-import { Node } from '../Node';
-import { Shape } from '../Shape';
-import { Rect } from './Rect';
-import { Group } from '../Group';
-import { ContainerConfig } from '../Container';
-import { GetSet, IRect, Vector2d } from '../types';
+import { Transform } from '../Util.js';
+import { Node } from '../Node.js';
+import { Shape } from '../Shape.js';
+import { Rect } from './Rect.js';
+import { Group } from '../Group.js';
+import { ContainerConfig } from '../Container.js';
+import { GetSet, IRect, Vector2d } from '../types.js';
 export interface Box extends IRect {
     rotation: number;
 }
@@ -50,11 +50,11 @@ export declare class Transformer extends Group {
     constructor(config?: TransformerConfig);
     attachTo(node: Node): this;
     setNode(node: Node): this;
-    getNode(): Node<import("../Node").NodeConfig>;
+    getNode(): Node<import("../Node.js").NodeConfig>;
     _getEventNamespace(): string;
     setNodes(nodes?: Array<Node>): this;
     _proxyDrag(node: Node): void;
-    getNodes(): Node<import("../Node").NodeConfig>[];
+    getNodes(): Node<import("../Node.js").NodeConfig>[];
     getActiveAnchor(): string | null;
     detach(): void;
     _resetTransformCache(): void;

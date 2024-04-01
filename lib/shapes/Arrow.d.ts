@@ -1,6 +1,6 @@
-import { Line, LineConfig } from './Line';
-import { GetSet } from '../types';
-import { Context } from '../Context';
+import { Line, LineConfig } from './Line.js';
+import { GetSet } from '../types.js';
+import { Context } from '../Context.js';
 export interface ArrowConfig extends LineConfig {
     points: number[];
     tension?: number;

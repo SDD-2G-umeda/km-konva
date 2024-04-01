@@ -1,15 +1,15 @@
-import { Transform } from './Util';
-import { Node } from './Node';
-import { Container } from './Container';
-import { Stage } from './Stage';
-import { Layer } from './Layer';
-import { FastLayer } from './FastLayer';
-import { Group } from './Group';
-import { Shape } from './Shape';
-import { Animation } from './Animation';
-import { Tween } from './Tween';
-import { Context } from './Context';
-import { Canvas } from './Canvas';
+import { Transform } from './Util.js';
+import { Node } from './Node.js';
+import { Container } from './Container.js';
+import { Stage } from './Stage.js';
+import { Layer } from './Layer.js';
+import { FastLayer } from './FastLayer.js';
+import { Group } from './Group.js';
+import { Shape } from './Shape.js';
+import { Animation } from './Animation.js';
+import { Tween } from './Tween.js';
+import { Context } from './Context.js';
+import { Canvas } from './Canvas.js';
 export declare const Konva: {
     _global: any;
     version: string;
@@ -19,9 +19,13 @@ export declare const Konva: {
     getAngle(angle: number): number;
     VERTICAL_TOP_RIGHT: string[];
     VERTICAL_TOP_RIGHT_OVER: string[];
-    VERTICAL_ROTATE_90: string[];
+    VERTICAL_ROTATE: string[];
+    VERTICAL_ROTATE_90_HALF: string[];
     VERTICAL_ROTATE_90_UP: string[];
     VERTICAL_ROTATE_90_DOWN: string[];
+    VERTICAL_ROTATE_90_QUOT_HALF: string[];
+    VERTICAL_ROTATE_90_QUOT_HALF_UP: string[];
+    VERTICAL_TRANSLATE: string[][];
     measureText: (text: string, fontSize: number, font: string, vertical: boolean) => {
         width: number;
         height: number;
@@ -70,9 +74,9 @@ export declare const Konva: {
         _isInDocument(el: any): boolean;
         _urlToImage(url: string, callback: Function): void;
         _rgbToHex(r: number, g: number, b: number): string;
-        _hexToRgb(hex: string): import("./types").RGB;
+        _hexToRgb(hex: string): import("./types.js").RGB;
         getRandomColor(): string;
-        getRGB(color: string): import("./types").RGB;
+        getRGB(color: string): import("./types.js").RGB;
         colorToRGBA(str: string): {
             r: number;
             g: number;
@@ -127,7 +131,7 @@ export declare const Konva: {
             b: number;
             a: number;
         } | undefined;
-        haveIntersection(r1: import("./types").IRect, r2: import("./types").IRect): boolean;
+        haveIntersection(r1: import("./types").IRect, r2: import("./types.js").IRect): boolean;
         cloneObject<Any>(obj: Any): Any;
         cloneArray(arr: any[]): any[];
         degToRad(deg: number): number;
@@ -142,7 +146,7 @@ export declare const Konva: {
         each(obj: Object, func: Function): void;
         _inRange(val: number, left: number, right: number): boolean;
         _getProjectionToSegment(x1: any, y1: any, x2: any, y2: any, x3: any, y3: any): any[];
-        _getProjectionToLine(pt: import("./types").Vector2d, line: import("./types").Vector2d[], isClosed: boolean): import("./types").Vector2d;
+        _getProjectionToLine(pt: import("./types").Vector2d, line: import("./types").Vector2d[], isClosed: boolean): import("./types.js").Vector2d;
         _prepareArrayForTween(startArray: any, endArray: any, isClosed: any): number[];
         _prepareToStringify<T>(obj: any): T | null;
         _assign<T_1, U>(target: T_1, source: U): T_1 & U;
@@ -161,11 +165,11 @@ export declare const Konva: {
     DD: {
         readonly isDragging: boolean;
         justDragged: boolean;
-        readonly node: Node<import("./Node").NodeConfig> | undefined;
+        readonly node: Node<import("./Node.js").NodeConfig> | undefined;
         _dragElements: Map<number, {
-            node: Node<import("./Node").NodeConfig>;
-            startPointerPos: import("./types").Vector2d;
-            offset: import("./types").Vector2d;
+            node: Node<import("./Node.js").NodeConfig>;
+            startPointerPos: import("./types.js").Vector2d;
+            offset: import("./types.js").Vector2d;
             pointerId?: number | undefined;
             dragStatus: "stopped" | "ready" | "dragging";
         }>;
@@ -175,7 +179,7 @@ export declare const Konva: {
     };
     Shape: typeof Shape;
     shapes: {
-        [key: string]: Shape<import("./Shape").ShapeConfig>;
+        [key: string]: Shape<import("./Shape.js").ShapeConfig>;
     };
     Animation: typeof Animation;
     Tween: typeof Tween;

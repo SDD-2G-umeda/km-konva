@@ -1,9 +1,9 @@
-import { Shape, ShapeConfig } from '../Shape';
-import { Group } from '../Group';
-import { Context } from '../Context';
-import { ContainerConfig } from '../Container';
-import { GetSet } from '../types';
-import { Text } from './Text';
+import { Shape, ShapeConfig } from '../Shape.js';
+import { Group } from '../Group.js';
+import { Context } from '../Context.js';
+import { ContainerConfig } from '../Container.js';
+import { GetSet } from '../types.js';
+import { Text } from './Text.js';
 export interface LabelConfig extends ContainerConfig {
 }
 export declare class Label extends Group {

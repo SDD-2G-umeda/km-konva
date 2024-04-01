@@ -1,7 +1,7 @@
-import { Canvas } from './Canvas';
-import { Shape } from './Shape';
-import { IRect } from './types';
-import type { Node } from './Node';
+import { Canvas } from './Canvas.js';
+import { Shape } from './Shape.js';
+import { IRect } from './types.js';
+import type { Node } from './Node.js';
 declare var CONTEXT_PROPERTIES: readonly ["fillStyle", "strokeStyle", "shadowColor", "shadowBlur", "shadowOffsetX", "shadowOffsetY", "letterSpacing", "lineCap", "lineDashOffset", "lineJoin", "lineWidth", "miterLimit", "direction", "font", "textAlign", "textBaseline", "globalAlpha", "globalCompositeOperation", "imageSmoothingEnabled"];
 interface ExtendedCanvasRenderingContext2D extends CanvasRenderingContext2D {
     letterSpacing: string;

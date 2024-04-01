@@ -1,4 +1,4 @@
-import { Node } from './Node';
+import { Node } from './Node.js';
 export declare const Factory: {
     addGetterSetter(constructor: any, attr: any, def?: any, validator?: any, after?: any): void;
     addGetter(constructor: any, attr: any, def?: any): void;

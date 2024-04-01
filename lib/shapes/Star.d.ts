@@ -1,6 +1,6 @@
-import { Context } from '../Context';
-import { Shape, ShapeConfig } from '../Shape';
-import { GetSet } from '../types';
+import { Context } from '../Context.js';
+import { Shape, ShapeConfig } from '../Shape.js';
+import { GetSet } from '../types.js';
 export interface StarConfig extends ShapeConfig {
     numPoints: number;
     innerRadius: number;

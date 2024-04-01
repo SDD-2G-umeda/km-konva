@@ -13,9 +13,13 @@ export declare const Konva: {
     getAngle(angle: number): number;
     VERTICAL_TOP_RIGHT: string[];
     VERTICAL_TOP_RIGHT_OVER: string[];
-    VERTICAL_ROTATE_90: string[];
+    VERTICAL_ROTATE: string[];
+    VERTICAL_ROTATE_90_HALF: string[];
     VERTICAL_ROTATE_90_UP: string[];
     VERTICAL_ROTATE_90_DOWN: string[];
+    VERTICAL_ROTATE_90_QUOT_HALF: string[];
+    VERTICAL_ROTATE_90_QUOT_HALF_UP: string[];
+    VERTICAL_TRANSLATE: string[][];
     measureText: typeof measureText;
     getDummyContext: typeof getDummyContext;
     enableTrace: boolean;

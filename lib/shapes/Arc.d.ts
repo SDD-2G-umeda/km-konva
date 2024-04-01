@@ -1,6 +1,6 @@
-import { Shape, ShapeConfig } from '../Shape';
-import { GetSet } from '../types';
-import { Context } from '../Context';
+import { Shape, ShapeConfig } from '../Shape.js';
+import { GetSet } from '../types.js';
+import { Context } from '../Context.js';
 export interface ArcConfig extends ShapeConfig {
     angle: number;
     innerRadius: number;

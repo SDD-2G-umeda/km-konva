@@ -1,6 +1,6 @@
-import { Shape, ShapeConfig } from '../Shape';
-import { GetSet } from '../types';
-import { Context } from '../Context';
+import { Shape, ShapeConfig } from '../Shape.js';
+import { GetSet } from '../types.js';
+import { Context } from '../Context.js';
 export interface RingConfig extends ShapeConfig {
     innerRadius: number;
     outerRadius: number;
