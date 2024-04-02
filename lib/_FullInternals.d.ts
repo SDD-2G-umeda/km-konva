@@ -22,14 +22,17 @@ export declare const Konva: {
     isUnminified: boolean;
     dblClickWindow: number;
     getAngle(angle: number): number;
+    VERTICAL_MOVE_UP: string[];
     VERTICAL_TOP_RIGHT: string[];
-    VERTICAL_TOP_RIGHT_OVER: string[];
-    VERTICAL_ROTATE: string[];
+    VERTICAL_JPN_PERIOD: string[];
+    VERTICAL_JPN_ROTATE: string[];
     VERTICAL_ROTATE_90_HALF: string[];
-    VERTICAL_ROTATE_90_UP: string[];
-    VERTICAL_ROTATE_90_DOWN: string[];
+    VERTICAL_JPN_BRACKET_START_FULL: string[];
+    VERTICAL_JPN_BRACKET_END_FULL: string[];
     VERTICAL_ROTATE_90_QUOT_HALF: string[];
-    VERTICAL_ROTATE_90_QUOT_HALF_UP: string[];
+    VERTICAL_ROTATE_90_HALF_UP: string[];
+    VERTICAL_ROTATE_90_HALF_UP_RIGHT: string[];
+    VERTICAL_ROTATE_90_HALF_DOWN: string[];
     VERTICAL_TRANSLATE: string[][];
     measureText: (text: string, fontSize: number, font: string, vertical: boolean) => {
         width: number;

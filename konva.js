@@ -971,7 +971,7 @@
    * Konva JavaScript Framework v9.3.6
    * http://konvajs.org/
    * Licensed under the MIT
-   * Date: Mon Apr 01 2024
+   * Date: Tue Apr 02 2024
    *
    * Original work Copyright (C) 2011 - 2013 by Eric Rowell (KineticJS)
    * Modified work Copyright (C) 2014 - present by Anton Lavrenov (Konva)
@@ -979,48 +979,90 @@
    * @license
    */
   const PI_OVER_180 = Math.PI / 180;
+  /** 縦書きで少し上に移動する文字（下が伸びている文字に対応する） */
+  const VERTICAL_MOVE_UP = [
+      'g', 'j', 'p', 'q', 'y', 'ｇ', 'ｊ', 'ｐ', 'ｑ', 'ｙ'
+  ];
   /** 縦書きで右上に移動する文字（捨て仮名） */
   const VERTICAL_TOP_RIGHT = [
       'っ', 'ぁ', 'ぃ', 'ぅ', 'ぇ', 'ぉ', 'ゃ', 'ゅ', 'ょ', 'ゎ', 'ゕ', 'ゖ', 'ァ', 'ィ', 'ゥ',
       'ェ', 'ォ', 'ヵ', 'ㇰ', 'ヶ', 'ㇱ', 'ㇲ', 'ッ', 'ㇳ', 'ㇴ', 'ㇵ', 'ㇶ', 'ㇷ', 'ㇷ゚', 'ㇸ',
       'ㇹ', 'ㇺ', 'ャ', 'ュ', 'ョ', 'ㇻ', 'ㇼ', 'ㇽ', 'ㇾ', 'ㇿ', 'ヮ'
   ];
-  /** 縦書きで右上よりさらに奥に移動する文字 */
-  const VERTICAL_TOP_RIGHT_OVER = [
-      '。', '、'
+  /**
+   * 日本語の読点、句点
+   * 縦書きで右上よりさらに奥に移動する
+   */
+  const VERTICAL_JPN_PERIOD = [
+      '。', '、', '｡', '､'
   ];
   /** 単純に90度回転する文字 */
-  const VERTICAL_ROTATE = [
-      'ー', '〝', '〟'
+  const VERTICAL_JPN_ROTATE = [
+      'ー', '〝', '〟', '〰', '〜', '～', '：', '；', '＜', '＞', '∿', '∾', '∿'
   ];
   /** 縦書きで90回転する約物（おそらく半角の場合にちょうど良い） */
   const VERTICAL_ROTATE_90_HALF = [
-      ' ', '　', '[', ']', '(', ')', '{', '}', '｢', '｣'
+      ' ', '　', '[', ']', '(', ')', '{', '}', '｢', '｣', '-', '･', '·', '·', 'ｰ',
+      '∼'
   ];
-  /** 縦書きで90回転する約物（回転した後に少し上に移動する） */
-  const VERTICAL_ROTATE_90_UP = [
+  /**
+   * 日本語の約物
+   * 縦書きで90回転する（回転した後に少し上に移動する）
+   */
+  const VERTICAL_JPN_BRACKET_START_FULL = [
       '「', '『', '【', '《', '〔', '〚', '〘', '〖', '［',
       '（', '『', '｛', '〈'
   ];
-  /** 縦書きで90回転する約物（回転した後に少し下に移動する） */
-  const VERTICAL_ROTATE_90_DOWN = [
+  /**
+   * 日本語の約物
+   * 縦書きで90回転する（回転した後に少し下に移動する）
+   */
+  const VERTICAL_JPN_BRACKET_END_FULL = [
       '」', '』', '】', '》', '〕', '〛', '〙', '〗', '〞', '］',
       '）', '』', '｝', '〉'
   ];
+  /** 縦書きで回転するクォーテーション */
   const VERTICAL_ROTATE_90_QUOT_HALF = [
       '‘', '’', '‵', '′', '‶', '"'
   ];
-  const VERTICAL_ROTATE_90_QUOT_HALF_UP = [
+  /**
+   * 縦書きで回転するクォーテーション
+   * そのまま回転すると文字に重なるため上に移動する
+   */
+  const VERTICAL_ROTATE_90_HALF_UP = [
       '\''
+  ];
+  /**
+   * 縦書きで回転するクォーテーション
+   * そのまま回転すると文字に重なるため下に移動する
+   */
+  const VERTICAL_ROTATE_90_HALF_DOWN = [
+      '<', '>', '~'
+  ];
+  /**
+   * 縦書きで回転するクォーテーション
+   * そのまま回転すると文字に重なるため右上に移動する
+   */
+  const VERTICAL_ROTATE_90_HALF_UP_RIGHT = [
+      ':', ';'
   ];
   /**
    * 縦横でコンバートする文字
    * [横], [縦]
    */
   const VERTICAL_TRANSLATE = [
-      ['“', '”'],
-      ['〝', '〟']
+      ['“', '”', '…', '︙', '‥', '︰'],
+      ['〝', '〟', '︙', '…', '︰', '‥']
   ];
+  /** 90度回転する文字を統合した配列 */
+  const VERTICAL_ROTATE_90 = VERTICAL_JPN_ROTATE
+      .concat(VERTICAL_ROTATE_90_HALF)
+      .concat(VERTICAL_JPN_BRACKET_START_FULL)
+      .concat(VERTICAL_JPN_BRACKET_END_FULL)
+      .concat(VERTICAL_ROTATE_90_QUOT_HALF)
+      .concat(VERTICAL_ROTATE_90_HALF_UP)
+      .concat(VERTICAL_ROTATE_90_HALF_UP_RIGHT)
+      .concat(VERTICAL_ROTATE_90_HALF_DOWN);
   /**
    * @namespace Konva
    */
@@ -1071,22 +1113,30 @@
       if (vertical) {
           let h = 0;
           let maxWidth = 0;
-          for (const char of text) {
+          for (let i = 0; i < text.length; i += 1) {
+              const char = text[i];
+              // 変換文字対象の文字かチェックする
               const index = VERTICAL_TRANSLATE[0].indexOf(char);
               const c = index >= 0 ? VERTICAL_TRANSLATE[1][index] : char;
               const metrics = _context.measureText(c);
-              if (VERTICAL_ROTATE.includes(c)
-                  || VERTICAL_ROTATE_90_HALF.includes(c)
-                  || VERTICAL_ROTATE_90_DOWN.includes(c)
-                  || VERTICAL_ROTATE_90_UP.includes(c)
-                  || VERTICAL_ROTATE_90_QUOT_HALF.includes(c)
-                  || VERTICAL_ROTATE_90_QUOT_HALF_UP.includes(c)) {
+              if (VERTICAL_ROTATE_90.includes(c)) {
                   size = { width: fontSize, height: metrics.width };
-                  h += size.height;
               }
               else {
                   size = { width: metrics.width, height: fontSize };
-                  h += fontSize;
+              }
+              // 読点で次の文字が全角の括弧閉じの場合は高さを半分にする
+              if (VERTICAL_JPN_PERIOD.includes(c)
+                  && VERTICAL_JPN_BRACKET_END_FULL.includes(text[i + 1])) {
+                  h += size.height / 2;
+              }
+              else if (i === text.length - 1
+                  && (VERTICAL_JPN_PERIOD.includes(c) || VERTICAL_JPN_BRACKET_END_FULL.includes(char))) {
+                  // 最後の文字が読点か括弧閉じの場合は高さを半分にする
+                  h += size.height / 2;
+              }
+              else {
+                  h += size.height;
               }
               maxWidth = Math.max(maxWidth, size.width);
               textVerticalSizes[fontSize][c] = size;
@@ -1121,14 +1171,17 @@
       getAngle(angle) {
           return Konva$2.angleDeg ? angle * PI_OVER_180 : angle;
       },
+      VERTICAL_MOVE_UP,
       VERTICAL_TOP_RIGHT,
-      VERTICAL_TOP_RIGHT_OVER,
-      VERTICAL_ROTATE,
+      VERTICAL_JPN_PERIOD,
+      VERTICAL_JPN_ROTATE,
       VERTICAL_ROTATE_90_HALF,
-      VERTICAL_ROTATE_90_UP,
-      VERTICAL_ROTATE_90_DOWN,
+      VERTICAL_JPN_BRACKET_START_FULL,
+      VERTICAL_JPN_BRACKET_END_FULL,
       VERTICAL_ROTATE_90_QUOT_HALF,
-      VERTICAL_ROTATE_90_QUOT_HALF_UP,
+      VERTICAL_ROTATE_90_HALF_UP,
+      VERTICAL_ROTATE_90_HALF_UP_RIGHT,
+      VERTICAL_ROTATE_90_HALF_DOWN,
       VERTICAL_TRANSLATE,
       measureText,
       getDummyContext: getDummyContext$1,
@@ -14473,8 +14526,9 @@
                   if (n !== 0) {
                       lineTranslateX -= VERTICAL_SPACING;
                   }
-                  for (var char of text) {
+                  for (let i = 0; i < text.length; i += 1) {
                       // 縦書き用の描画用文字変換
+                      const char = text[i];
                       const index = Konva$2.VERTICAL_TRANSLATE[0].indexOf(char);
                       const c = index >= 0 ? Konva$2.VERTICAL_TRANSLATE[1][index] : char;
                       // Note: l などの細い文字を中央寄せにする
@@ -14482,13 +14536,15 @@
                       const diffX = (width - size.width) / 2;
                       this._partialText = c;
                       // 処理を少しでも軽くするために、すでに見つかっていたら後続のフラグは見ないようにする
-                      const isRotate = Konva$2.VERTICAL_ROTATE.includes(c);
+                      const isRotate = Konva$2.VERTICAL_JPN_ROTATE.includes(c);
                       const isRotateHalf = Konva$2.VERTICAL_ROTATE_90_HALF.includes(c);
-                      const isRotateUp = !isRotateHalf && Konva$2.VERTICAL_ROTATE_90_UP.includes(c);
-                      const isRotateDown = !isRotateUp && Konva$2.VERTICAL_ROTATE_90_DOWN.includes(c);
+                      const isRotateUp = !isRotateHalf && Konva$2.VERTICAL_JPN_BRACKET_START_FULL.includes(c);
+                      const isRotateDown = !isRotateUp && Konva$2.VERTICAL_JPN_BRACKET_END_FULL.includes(c);
                       const isRotateQuotHalf = !isRotateDown && Konva$2.VERTICAL_ROTATE_90_QUOT_HALF.includes(c);
-                      const isRotateQuotHalfUp = !isRotateDown && Konva$2.VERTICAL_ROTATE_90_QUOT_HALF_UP.includes(c);
-                      if (isRotate || isRotateHalf || isRotateUp || isRotateDown || isRotateQuotHalf || isRotateQuotHalfUp) {
+                      const isRotateHalfUp = !isRotateQuotHalf && Konva$2.VERTICAL_ROTATE_90_HALF_UP.includes(c);
+                      const isRotateHalfUpRight = !isRotateHalfUp && Konva$2.VERTICAL_ROTATE_90_HALF_UP_RIGHT.includes(c);
+                      const isRotateHalfDown = !isRotateHalfUpRight && Konva$2.VERTICAL_ROTATE_90_HALF_DOWN.includes(c);
+                      if (isRotate || isRotateHalf || isRotateUp || isRotateDown || isRotateQuotHalf || isRotateHalfUp || isRotateHalfUpRight || isRotateHalfDown) {
                           this._partialTextX = 0;
                           this._partialTextY = 0;
                           let rotateDiffX;
@@ -14515,9 +14571,17 @@
                               rotateDiffX = size.width * 0.5;
                               rotateDiffY = size.height;
                           }
-                          else {
+                          else if (isRotateHalfUp) {
                               rotateDiffX = size.width * 0.5;
                               rotateDiffY = size.height * 1.65;
+                          }
+                          else if (isRotateHalfUpRight) {
+                              rotateDiffX = size.width * 0.62;
+                              rotateDiffY = size.height * 1.65;
+                          }
+                          else {
+                              rotateDiffX = size.width * 0.5;
+                              rotateDiffY = size.height * 0.95;
                           }
                           context.save();
                           context.translate(lineTranslateX + diffX + rotateDiffX, translateY - rotateDiffY);
@@ -14531,9 +14595,13 @@
                               this._partialTextX = lineTranslateX + diffX + size.width / 8;
                               this._partialTextY = translateY - size.height / 8;
                           }
-                          else if (Konva$2.VERTICAL_TOP_RIGHT_OVER.includes(c)) {
+                          else if (Konva$2.VERTICAL_JPN_PERIOD.includes(c)) {
                               this._partialTextX = lineTranslateX + diffX + size.width * 0.65;
                               this._partialTextY = translateY - size.height / 2;
+                          }
+                          else if (Konva$2.VERTICAL_MOVE_UP.includes(c)) {
+                              this._partialTextX = lineTranslateX + diffX;
+                              this._partialTextY = translateY - size.height * 0.20;
                           }
                           else {
                               this._partialTextX = lineTranslateX + diffX;
@@ -14541,7 +14609,14 @@
                           }
                           context.fillStrokeShape(this);
                       }
-                      translateY += size.height;
+                      // 読点の後に全角の括弧閉じが続く場合は高さを半分にする
+                      if (Konva$2.VERTICAL_JPN_PERIOD.includes(c)
+                          && Konva$2.VERTICAL_JPN_BRACKET_END_FULL.includes(text[i + 1])) {
+                          translateY += size.height / 2;
+                      }
+                      else {
+                          translateY += size.height;
+                      }
                   }
                   context.restore();
                   if (shouldUnderline) {
@@ -14702,7 +14777,7 @@
           });
       }
       _setTextData() {
-          var lines = this.text().split('\n'), fontSize = +this.fontSize(), fontFamily = this._getContextFont(), textWidth = 0, lineHeightPx = this.lineHeight() * fontSize, width = this.attrs.width, height = this.attrs.height, vertical = this.vertical(), fixedWidth = width !== AUTO && width !== undefined, fixedHeight = height !== AUTO && height !== undefined, padding = this.padding(), maxWidth = typeof width === 'number' ? width - padding * 2 : undefined, maxHeightPx = typeof height === 'number' ? height - padding * 2 : undefined, currentHeightPx = 0, wrap = this.wrap(), 
+          var lines = this.text().split('\n'), fontSize = this.fontSize(), fontFamily = this._getContextFont(), textWidth = 0, lineHeightPx = this.lineHeight() * fontSize, width = this.attrs.width, height = this.attrs.height, vertical = this.vertical(), fixedWidth = width !== AUTO && width !== undefined, fixedHeight = height !== AUTO && height !== undefined, padding = this.padding(), maxWidth = typeof width === 'number' ? width - padding * 2 : undefined, maxHeightPx = typeof height === 'number' ? height - padding * 2 : undefined, currentHeightPx = 0, wrap = this.wrap(), 
           // align = this.align(),
           shouldWrap = wrap !== NONE, wrapAtWord = wrap !== CHAR && shouldWrap, shouldAddEllipsis = this.ellipsis();
           this.textArr = [];
@@ -14717,23 +14792,20 @@
                           continue;
                       }
                       const textArr = stringToArray(line);
-                      let h = 0;
                       let lineText = '';
                       for (const char of textArr) {
-                          const size = Konva$2.measureText(char, fontSize, fontFamily, true);
+                          const size = Konva$2.measureText(lineText + char, fontSize, fontFamily, true);
                           w = Math.max(w, size.width);
-                          h += size.height;
-                          if (h > maxHeightPx) {
+                          if (size.height > maxHeightPx) {
                               this._addTextLine(lineText);
                               lineText = char;
-                              h = size.height;
                               textWidth += Math.max(w, fontSize);
                           }
                           else {
                               lineText += char;
                           }
                       }
-                      textWidth += w;
+                      textWidth += Math.max(w, fontSize);
                       this._addTextLine(lineText);
                   }
                   // 幅に行間を追加する
@@ -14979,8 +15051,10 @@
    *
    * // set font family
    * text.fontFamily('Arial');
+   * Note: 文字->文字サイズ->フォントで適用される
+   * 適用の度にサイズの計測が入るため、処理軽減のため最初からデフォルトのフォントを設定しておく
    */
-  Factory.addGetterSetter(Text, 'fontFamily', 'Arial');
+  Factory.addGetterSetter(Text, 'fontFamily', '\"Noto Sans JP\", sans-serif');
   /**
    * get/set font size in pixels
    * @name Konva.Text#fontSize
@@ -14994,7 +15068,7 @@
    * // set font size to 22px
    * text.fontSize(22);
    */
-  Factory.addGetterSetter(Text, 'fontSize', 12, getNumberValidator());
+  Factory.addGetterSetter(Text, 'fontSize', 22, getNumberValidator());
   /**
    * get/set font style.  Can be 'normal', 'italic', or 'bold', '500' or even 'italic bold'.  'normal' is the default.
    * @name Konva.Text#fontStyle
