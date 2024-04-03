@@ -24,6 +24,7 @@ export declare const Konva: {
     VERTICAL_ROTATE_90_HALF: string[];
     VERTICAL_JPN_BRACKET_START_FULL: string[];
     VERTICAL_JPN_BRACKET_END_FULL: string[];
+    VERTICAL_JPN_ORTHOGRAPHY: string[];
     VERTICAL_ROTATE_90_QUOT_HALF: string[];
     VERTICAL_ROTATE_90_HALF_UP: string[];
     VERTICAL_ROTATE_90_HALF_UP_RIGHT: string[];

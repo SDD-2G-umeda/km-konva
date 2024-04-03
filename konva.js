@@ -998,7 +998,8 @@
   ];
   /** 単純に90度回転する文字 */
   const VERTICAL_JPN_ROTATE = [
-      'ー', '〝', '〟', '〰', '〜', '～', '：', '；', '＜', '＞', '∿', '∾', '∿', '￣', '＿', '＝'
+      'ー', '〝', '〟', '〰', '〜', '～', '：', '；', '＜', '＞', '∿', '∾', '∿', '￣', '＿',
+      '＝', '≪', '≫'
   ];
   /** 縦書きで90回転する約物（おそらく半角の場合にちょうど良い） */
   const VERTICAL_ROTATE_90_HALF = [
@@ -1016,6 +1017,7 @@
   /**
    * 日本語の約物
    * 縦書きで90回転する（回転した後に少し下に移動する）
+   * Note: ここに記載した文字は読点の後に続く場合に高さを半分で計算する
    */
   const VERTICAL_JPN_BRACKET_END_FULL = [
       '」', '』', '】', '》', '〕', '〛', '〙', '〗', '〞', '］',
@@ -1023,14 +1025,14 @@
   ];
   /** 縦書きで回転するクォーテーション */
   const VERTICAL_ROTATE_90_QUOT_HALF = [
-      '‘', '’', '‵', '′', '‶', '"'
+      '‵', '′', '‶', '"'
   ];
   /**
    * 縦書きで回転するクォーテーション
    * そのまま回転すると文字に重なるため上に移動する
    */
   const VERTICAL_ROTATE_90_HALF_UP = [
-      '\''
+      '\'', '‘', '’'
   ];
   /**
    * 縦書きで回転するクォーテーション
@@ -1053,6 +1055,13 @@
   const VERTICAL_TRANSLATE = [
       ['“', '”', '…', '︙', '‥', '︰', '│', '─', '｜'],
       ['〝', '〟', '︙', '…', '︰', '‥', '─', '│', '─']
+  ];
+  /**
+   * 濁点、半濁点
+   * Note: これらの文字はサイズが 0x0 になる
+   */
+  const VERTICAL_JPN_ORTHOGRAPHY = [
+      'ﾞ', 'ﾟ'
   ];
   /** 90度回転する文字を統合した配列 */
   const VERTICAL_ROTATE_90 = VERTICAL_JPN_ROTATE
@@ -1115,6 +1124,9 @@
           let maxWidth = 0;
           for (let i = 0; i < text.length; i += 1) {
               const char = text[i];
+              if (VERTICAL_JPN_ORTHOGRAPHY.includes(char)) {
+                  continue;
+              }
               // 変換文字対象の文字かチェックする
               const index = VERTICAL_TRANSLATE[0].indexOf(char);
               const c = index >= 0 ? VERTICAL_TRANSLATE[1][index] : char;
@@ -1178,6 +1190,7 @@
       VERTICAL_ROTATE_90_HALF,
       VERTICAL_JPN_BRACKET_START_FULL,
       VERTICAL_JPN_BRACKET_END_FULL,
+      VERTICAL_JPN_ORTHOGRAPHY,
       VERTICAL_ROTATE_90_QUOT_HALF,
       VERTICAL_ROTATE_90_HALF_UP,
       VERTICAL_ROTATE_90_HALF_UP_RIGHT,
@@ -14602,6 +14615,17 @@
                           else if (Konva$2.VERTICAL_MOVE_UP.includes(c)) {
                               this._partialTextX = lineTranslateX + diffX;
                               this._partialTextY = translateY - size.height * 0.20;
+                          }
+                          else if (Konva$2.VERTICAL_JPN_ORTHOGRAPHY.includes(c)) {
+                              // 濁点、半濁点は前の文字に重ねる
+                              // 前の文字の右上に表示する
+                              const prevSize = Konva$2.measureText(text[i - 1], fontSize, fontFamily, vertical);
+                              // Note: 濁点、半濁点のサイズは 0x0 となるので、diffX は前の文字のサイズを使う
+                              // 表示位置は前の文字の右端の上に表示する
+                              this._partialTextX = lineTranslateX + (width - prevSize.width) / 2 + prevSize.width;
+                              this._partialTextY = translateY - prevSize.height;
+                              // 高さを加算しないようにする
+                              size.height = 0;
                           }
                           else {
                               this._partialTextX = lineTranslateX + diffX;
