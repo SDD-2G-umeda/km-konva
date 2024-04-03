@@ -971,7 +971,7 @@
    * Konva JavaScript Framework v9.3.6
    * http://konvajs.org/
    * Licensed under the MIT
-   * Date: Tue Apr 02 2024
+   * Date: Wed Apr 03 2024
    *
    * Original work Copyright (C) 2011 - 2013 by Eric Rowell (KineticJS)
    * Modified work Copyright (C) 2014 - present by Anton Lavrenov (Konva)
@@ -998,7 +998,7 @@
   ];
   /** 単純に90度回転する文字 */
   const VERTICAL_JPN_ROTATE = [
-      'ー', '〝', '〟', '〰', '〜', '～', '：', '；', '＜', '＞', '∿', '∾', '∿'
+      'ー', '〝', '〟', '〰', '〜', '～', '：', '；', '＜', '＞', '∿', '∾', '∿', '￣', '＿', '＝'
   ];
   /** 縦書きで90回転する約物（おそらく半角の場合にちょうど良い） */
   const VERTICAL_ROTATE_90_HALF = [
@@ -1037,22 +1037,22 @@
    * そのまま回転すると文字に重なるため下に移動する
    */
   const VERTICAL_ROTATE_90_HALF_DOWN = [
-      '<', '>', '~'
+      '<', '>', '~', '`'
   ];
   /**
    * 縦書きで回転するクォーテーション
    * そのまま回転すると文字に重なるため右上に移動する
    */
   const VERTICAL_ROTATE_90_HALF_UP_RIGHT = [
-      ':', ';'
+      ':', ';', '|'
   ];
   /**
    * 縦横でコンバートする文字
    * [横], [縦]
    */
   const VERTICAL_TRANSLATE = [
-      ['“', '”', '…', '︙', '‥', '︰'],
-      ['〝', '〟', '︙', '…', '︰', '‥']
+      ['“', '”', '…', '︙', '‥', '︰', '│', '─', '｜'],
+      ['〝', '〟', '︙', '…', '︰', '‥', '─', '│', '─']
   ];
   /** 90度回転する文字を統合した配列 */
   const VERTICAL_ROTATE_90 = VERTICAL_JPN_ROTATE
